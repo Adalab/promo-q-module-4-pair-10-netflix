@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const data = require("./movies.json");
+const users = require("./data/users.json");
 
 // create and config server
 const server = express();
@@ -24,6 +25,30 @@ server.get("/movies", (req, resp) => {
   }
 
   resp.json({ success: true, movies: filterGender });
+});
+
+server.post("/login", (req, resp) => {
+  console.log(req.body);
+  let userLogin = users.find(
+    (user) =>
+      user.email === req.body.email && user.password === req.body.password
+  );
+
+  console.log(userLogin);
+
+  //si userLogin existe y tiene algún valor
+
+  if (userLogin) {
+    resp.json({
+      success: true,
+      userId: userLogin.id,
+    });
+  } else {
+    resp.json({
+      success: false,
+      errorMessage: "Usuaria/o no encontrada/o",
+    });
+  }
 });
 
 //La ruta base del static server empieza a raíz de proyecto (package.json)
