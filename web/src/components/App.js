@@ -11,10 +11,11 @@ import SignUp from "./SignUp";
 import apiMovies from "../services/api-movies";
 import apiUser from "../services/api-user";
 import router from "../services/router";
+import localStorage from "../services/local-storage";
 
 const App = () => {
   // state: user
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState(localStorage.get("userLoginId", ""));
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -27,6 +28,8 @@ const App = () => {
   const [appMovies, setAppMovies] = useState([]);
   const [allMoviesOptionGender, setAllMoviesOptionGender] = useState("");
   const [allMoviesOptionSort, setAllMoviesOptionSort] = useState("asc");
+
+  console.log(`Este es el userId:${userId}`);
 
   /*
   useEffect: obtener las películas del API.
@@ -55,8 +58,12 @@ const App = () => {
         setUserEmail(response.email);
         setUserPassword(response.password);
       });
+
+      localStorage.set("userLoginId", userId);
     }
   }, [userId]);
+
+  //useEffect para guardar el userId en local storage y mantener a la usuaria logueada.
 
   /*
   useEffect: obtener las películas de la usuaria.
