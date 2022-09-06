@@ -25,3 +25,11 @@ server.get("/movies", (req, resp) => {
 
   resp.json({ success: true, movies: filterGender });
 });
+
+//La ruta base del static server empieza a raíz de proyecto (package.json)
+
+const staticServer = "./src/public-react";
+server.use(express.static(staticServer));
+
+const staticServerPics = "./src/public-movies-images";
+server.use(express.static(staticServerPics));
