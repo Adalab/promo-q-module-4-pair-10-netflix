@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const movies = require("./movies.json");
+const data = require("./movies.json");
 
 // create and config server
 const server = express();
@@ -14,5 +14,14 @@ server.listen(serverPort, () => {
 });
 
 server.get("/movies", (req, resp) => {
-  resp.json(movies);
+  const genderFilterParam = req.query.gender;
+  let filterGender = data.movies;
+
+  if (genderFilterParam && genderFilterParam !== "") {
+    filterGender = data.movies.filter(
+      (movie) => movie.gender === genderFilterParam
+    );
+  }
+
+  resp.json({ success: true, movies: filterGender });
 });
