@@ -14,6 +14,10 @@ server.listen(serverPort, () => {
   console.log(`Server listening at http://localhost:${serverPort}`);
 });
 
+//import ejs (template engine)
+
+server.set("view engine", "ejs");
+
 server.get("/movies", (req, resp) => {
   const genderFilterParam = req.query.gender;
   let filterGender = data.movies;
@@ -49,6 +53,17 @@ server.post("/login", (req, resp) => {
       errorMessage: "Usuaria/o no encontrada/o",
     });
   }
+});
+
+//endpoint para motor de plantillas
+
+server.get("/movie/:movieId", (req, res) => {
+  console.log(req.params.movieId);
+  const foundMovie = data.movies.find(
+    (movie) => movie.id === req.params.movieId
+  );
+  console.log(foundMovie);
+  res.render("pages/movie", foundMovie);
 });
 
 //La ruta base del static server empieza a raíz de proyecto (package.json)

@@ -29,8 +29,6 @@ const App = () => {
   const [allMoviesOptionGender, setAllMoviesOptionGender] = useState("");
   const [allMoviesOptionSort, setAllMoviesOptionSort] = useState("asc");
 
-  console.log(`Este es el userId:${userId}`);
-
   /*
   useEffect: obtener las películas del API.
   Se ejecuta cuando allMoviesOptionGender o allMoviesOptionSort cambian de valor.
