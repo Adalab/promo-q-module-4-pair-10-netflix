@@ -2,12 +2,10 @@ const express = require("express");
 const cors = require("cors");
 const data = require("./movies.json");
 const users = require("./data/users.json");
-const Database = require('better-sqlite3');
+const Database = require("better-sqlite3");
 
 // DB
-const db = new Database('./src/db/database.db', {verbose: console.log});
-
-
+const db = new Database("./src/db/database.db", { verbose: console.log });
 
 // create and config server
 const server = express();
@@ -37,15 +35,14 @@ server.set("view engine", "ejs");
 //   resp.json({ success: true, movies: filterGender });
 // });
 
-
 server.get("/movies", (req, resp) => {
-  const query = db.prepare('SELECT * FROM movies');
-  const movies = query.all();
- console.log(movies);
- resp.json({ success: true, movies: movies });
+  const genderFilterParam = req.query.gender;
+  const query = db.prepare("SELECT * FROM movies WHERE gender === ?");
+  const movies = query.all(genderFilterParam);
+
+  console.log(movies);
+  resp.json({ success: true, movies: movies });
 });
-
-
 
 server.post("/login", (req, resp) => {
   console.log(req.body);
@@ -92,5 +89,3 @@ server.use(express.static(staticServerPics));
 
 const staticServerStyles = "./src/public-styles";
 server.use(express.static(staticServerStyles));
-
-
