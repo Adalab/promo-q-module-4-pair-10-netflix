@@ -58,9 +58,7 @@ server.post("/login", (req, resp) => {
   );
 
   console.log(userLogin);
-
   //si userLogin existe y tiene algún valor
-
   if (userLogin) {
     resp.json({
       success: true,
@@ -82,6 +80,16 @@ server.get("/movie/:movieId", (req, res) => {
   const movie = query.get(movieId);
 
   res.render("pages/movie", movie);
+});
+
+
+server.post("/signup", (req, res) => {
+  const query = db.prepare(
+    'INSERT INTO users (email, password) VALUES (?, ?)'
+    );
+    const result = query.run(req.body.email, req.body.password);
+    console.log(result);
+    res.json(result);
 });
 
 //La ruta base del static server empieza a raíz de proyecto (package.json)
