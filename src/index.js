@@ -37,13 +37,14 @@ server.set("view engine", "ejs");
 
 server.get("/movies", (req, resp) => {
   const genderFilterParam = req.query.gender;
-  const query = db.prepare("SELECT * FROM movies WHERE gender = ?");
-  const movies = query.all(genderFilterParam);
-// if (req.query.gender === "") {
-//   const query = db.prepare("SELECT * FROM movies");
-//   const movies = query.all();
-// }
-
+  let movies = [];
+  if (req.query.gender === "") {
+    const query = db.prepare("SELECT * FROM movies");
+    movies = query.all();
+  } else {
+    const query = db.prepare("SELECT * FROM movies WHERE gender = ?");
+    movies = query.all(genderFilterParam);
+  }
 
   console.log(movies);
   resp.json({ success: true, movies: movies });
@@ -79,7 +80,7 @@ server.get("/movie/:movieId", (req, res) => {
   const movieId = req.params.movieId;
   const query = db.prepare("SELECT * FROM movies WHERE id = ?");
   const movie = query.get(movieId);
-  
+
   res.render("pages/movie", movie);
 });
 
